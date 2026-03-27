@@ -29,6 +29,49 @@ A projekt az alábbi fájlokból áll:
 2.  Mivel a projekt **JavaScript modulokat** (`import/export`) használ, egy egyszerű lokális webszerverre lesz szükséged a futtatáshoz (például VS Code *Live Server* bővítmény).
 3.  Nyisd meg az `index.html` fájlt a böngésződben a szerveren keresztül.
 
+## 🏗️ Rendszerfelépítés (UML Osztálydiagram)
+
+Az alábbi ábra szemlélteti a játék logikai felépítését és az osztályok közötti kapcsolatokat:
+
+```mermaid
+classDiagram
+    direction TB
+    class Tabla {
+        -lista: Array
+        +szuloElem: HTMLElement
+        +constructor(lista, szuloElem)
+        +megjelenit()
+        +setlista(index, adat)
+    }
+
+    class Cella {
+        -adat: String
+        -index: Number
+        +szuloElem: HTMLElement
+        +divElem: HTMLElement
+        +constructor(adat, index, szuloElem)
+        +megjelenit()
+        +esemenykezelo()
+        +sajatesemeny()
+    }
+
+    class IndexJS {
+        <<Module>>
+        -LISTA: Array
+        -kovetkezo: String
+        +ujJatek()
+    }
+
+    class EllenorzesJS {
+        <<Module>>
+        +nyert(lista, jatekos)
+    }
+
+    Tabla "1" *-- "9" Cella : példányosítja és tartalmazza
+    IndexJS ..> Tabla : vezérli
+    IndexJS ..> EllenorzesJS : meghívja az ellenőrzést
+    Cella --|> IndexJS : 'katt' CustomEvent-et küld
+
 ## ✒️ Szerző
 
 **Páczi Balázs**
