@@ -1,3 +1,31 @@
+*{
+    box-sizing: border-box;
+}
+body{
+    background-image: url(src/background.jpg);
+}
+
+main{
+    width: 80%;
+    margin: auto;
+    text-align: center;
+}
+
+h1{
+    color: #d9d9e5;
+    font-size: 40px;
+
+}
+
+.tartalom{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    background-color: #1d1e3d;  
+}
+
+
+
 article{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -13,13 +41,14 @@ article{
     align-items: center;
     border: 1px solid black;
     text-align: center;
-    min-height:50px ;
+    min-height:150px ;  
+    background-color: #1d1e3d; 
+    color: #d9d9e5;
+    font-size: 150px;
 
     
 }
-
-main{
-    width: 80%;
-    margin: auto;
-    text-align: center;
+footer{
+        color: #d9d9e5;
+    font-size: 20px;
 }
