@@ -1,34 +1,57 @@
 # Tic-Tac-Toe Játék
 
-Egy klasszikus amőba (Tic-Tac-Toe) játék, amely modern JavaScript (ES6+), objektumorientált szemléletmód és moduláris felépítés használatával készült.
+Ez egy modern, objektumorientált szemlélettel készült amőba játék, amely moduláris JavaScript felépítést használ.
 
 ## 🎮 Projekt leírása
 
-A játék egy 3x3-as rácson játszódik, ahol két játékos ("X" és "O") váltja egymást. A cél, hogy vízszintesen, függőlegesen vagy átlósan három azonos jelet juttassunk egymás mellé.
+A játék egy 3x3-as rácson játszódik, ahol a játékosok ("x" és "o") váltják egymást. A program minden lépés után ellenőrzi a nyerő kombinációkat, és győzelem esetén üzenetet küld a felhasználónak.
 
 ### Főbb funkciók:
-* **Interaktív felület:** Kattintásra reagáló cellák.
-* **Győzelem ellenőrzés:** Automatikus logika, amely minden lépés után vizsgálja a nyerő kombinációkat.
-* **Új játék indítása:** Külön gomb a tábla alaphelyzetbe állításához.
-* **Egyedi eseménykezelés:** A komponensek közötti kommunikáció `CustomEvent` használatával történik.
+* **Moduláris felépítés**: Külön osztályok felelnek a tábláért és a cellákért.
+* **Egyedi eseménykezelés**: A cellákra való kattintás `CustomEvent` segítségével jut el a fővezérlőhöz.
+* **Új játék**: Lehetőség van a tábla alaphelyzetbe állítására a gomb segítségével.
 
-## 🛠️ Technikai részletek
+---
 
-A projekt az alábbi fájlokból áll:
+## 🏗️ Rendszerfelépítés (UML Osztálydiagram)
 
-* `index.html`: A játék vázát adó HTML struktúra.
-* `style.css`: A vizuális megjelenésért és a reszponzív grid elrendezésért felelős stíluslap.
-* `index.js`: A fő vezérlő logika, amely kezeli a játék állapotát és a kattintásokat.
-* `Tabla.js`: Az egész játékteret reprezentáló osztály.
-* `Cella.js`: Az egyes négyzeteket kezelő osztály, amely felelős a saját megjelenítéséért és a kattintás továbbításáért.
-* `ellenorzes.js`: Egy külső modul, amely a nyerési feltételek algoritmusát tartalmazza.
+Az alábbi ábra mutatja be az osztályok közötti kapcsolatokat és a projekt logikai felépítését:
 
-## 🚀 Telepítés és használat
+```mermaid
+classDiagram
+    direction TB
+    class Tabla {
+        -lista: Array
+        +szuloElem: HTMLElement
+        +constructor(lista, szuloElem)
+        +megjelenit()
+        +setlista(index, adat)
+    }
 
-1.  Töltsd le vagy klónozd a projektet.
-2.  Mivel a projekt **JavaScript modulokat** (`import/export`) használ, egy egyszerű lokális webszerverre lesz szükséged a futtatáshoz (például VS Code *Live Server* bővítmény).
-3.  Nyisd meg az `index.html` fájlt a böngésződben a szerveren keresztül.
+    class Cella {
+        -adat: String
+        -index: Number
+        +szuloElem: HTMLElement
+        +divElem: HTMLElement
+        +constructor(adat, index, szuloElem)
+        +megjelenit()
+        +esemenykezelo()
+        +sajatesemeny()
+    }
 
-## ✒️ Szerző
+    class IndexJS {
+        <<Module>>
+        -LISTA: Array
+        -kovetkezo: String
+        +ujJatek()
+    }
 
-**Páczi Balázs**
+    class EllenorzesJS {
+        <<Module>>
+        +nyert(lista, jatekos)
+    }
+
+    Tabla "1" *-- "9" Cella : példányosítja és tartalmazza
+    IndexJS ..> Tabla : vezérli
+    IndexJS ..> EllenorzesJS : meghívja az ellenőrzést
+    Cella ..> IndexJS : 'katt' CustomEvent-et küld
